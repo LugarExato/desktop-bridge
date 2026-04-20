@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lugar Exato - Console Premium</title>
+    <style>
+        :root {
+            --primary: #25d366;
+            --primary-glow: rgba(37, 211, 102, 0.4);
+            --danger: #ff4757;
+            --danger-glow: rgba(255, 71, 87, 0.4);
+            --bg: #0b141a;
+            --surface: #121b22;
+            --glass: rgba(255, 255, 255, 0.03);
+            --text-main: #e9edef;
+            --text-dim: #8696a0;
+            --header-bg: rgba(18, 27, 34, 0.8);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(37, 211, 102, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(37, 211, 102, 0.05) 0%, transparent 20%);
+        }
+
+        /* PREMIUM HEADER */
+        .header {
+            background: var(--header-bg);
+            backdrop-filter: blur(20px);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            -webkit-app-region: drag;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-text {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            background: linear-gradient(120deg, #fff, #25d366);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .badge-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--glass);
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--danger);
+            box-shadow: 0 0 10px var(--danger);
+            transition: 0.5s;
+        }
+
+        .online .status-dot {
+            background: var(--primary);
+            box-shadow: 0 0 15px var(--primary);
+        }
+
+        /* TABS */
+        .nav-tabs {
+            display: flex;
+            background: rgba(0,0,0,0.2);
+            padding: 5px;
+            gap: 5px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 12px;
+            color: var(--text-dim);
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-app-region: no-drag;
+        }
+
+        .tab-btn:hover {
+            color: white;
+            background: rgba(255,255,255,0.03);
+        }
+
+        .tab-btn.active {
+            background: var(--glass);
+            color: var(--primary);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+        }
+
+        /* MAIN VIEW */
+        .view-container {
+            flex: 1;
+            position: relative;
+        }
+
+        .view {
+            display: none;
+            height: 100%;
+            width: 100%;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        #whatsapp-placeholder {
+            background: radial-gradient(circle at center, #121b22 0%, #0b141a 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-dim);
+        }
+
+        /* CONTROL PANEL */
+        .panel-grid {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 30px;
+            height: calc(100% - 60px);
+        }
+
+        .premium-card {
+            background: var(--surface);
+            border-radius: 24px;
+            padding: 35px;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-dim);
+            margin-bottom: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .premium-input {
+            width: 100%;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 14px 18px;
+            border-radius: 12px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+            transition: 0.3s;
+            box-sizing: border-box;
+        }
+
+        .premium-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(37, 211, 102, 0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+            color: #121b22;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 10px 20px var(--primary-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px var(--primary-glow);
+        }
+
+        /* LOG MONITOR */
+        .log-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .log-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .log-screen {
+            background: #07090a;
+            border-radius: 16px;
+            padding: 20px;
+            flex: 1;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            overflow-y: auto;
+            border: 1px solid rgba(255,255,255,0.05);
+            color: #a4b0be;
+        }
+
+        .log-line { margin-bottom: 6px; display: flex; gap: 12px; }
+        .log-t { color: #576574; font-weight: bold; }
+        .log-m { color: var(--primary); }
+        .log-e { color: var(--danger); }
+
+        /* NOTIFICATION OVERLAY */
+        #notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--surface);
+            border-left: 4px solid var(--danger);
+            padding: 20px 25px;
+            border-radius: 12px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+            display: none;
+            z-index: 9999;
+            max-width: 350px;
+            animation: slideIn 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .notif-title { font-weight: 800; font-size: 14px; color: var(--danger); margin-bottom: 5px; }
+        .notif-body { font-size: 13px; color: var(--text-dim); line-height: 1.4; }
+
+        /* UTILS */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+    </style>
+</head>
+<body id="mainBody">
+    <div id="notification">
+        <div class="notif-title">ALERTA DE CONEXÃO</div>
+        <div class="notif-body" id="notif-msg">Ocorreu um erro ao tentar conectar.</div>
+    </div>
+
+    <header class="header">
+        <div class="logo-area">
+            <div class="logo-text">LUGAR EXATO BRIDGE</div>
+        </div>
+        <div class="badge-status" id="connStatus">
+            <span id="motorHeartbeat" style="margin-right: 10px; font-size: 14px; opacity: 0.5;"></span>
+            <button onclick="reloadWA()" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-dim); padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: 700; cursor: pointer; margin-right: 15px; -webkit-app-region: no-drag;">RECARREGAR WHATSAPP</button>
+            <div class="status-dot"></div>
+            <span id="statusLabel">Offline</span>
+        </div>
+    </header>
+
+    <nav class="nav-tabs">
+        <button class="tab-btn active" id="tab-wa" onclick="switchView('whatsapp')">AGENTE WHATSAPP</button>
+        <button class="tab-btn" id="tab-panel" onclick="switchView('panel')">PAINEL DE CONTROLE</button>
+    </nav>
+
+    <div class="view-container">
+        <!-- LIVE WHATSAPP VIEW -->
+        <div id="whatsapp-view" class="view active">
+            <div id="whatsapp-placeholder">
+                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.2; margin-bottom: 20px;">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+                <div style="font-weight: 600; letter-spacing: 0.5px;">Carregando Integração...</div>
+            </div>
+        </div>
+
+        <!-- CONTROL PANEL VIEW -->
+        <div id="panel-view" class="view">
+            <div class="panel-grid">
+                <div class="premium-card">
+                    <h2 class="card-title">Configurações</h2>
+                    <p style="color: var(--text-dim); font-size: 13px; margin: 0;">Insira seu token para ativar a ponte de automação.</p>
+                    
+                    <div class="input-group" style="margin-top: 20px;">
+                        <label>Vincular Token</label>
+                        <input type="text" id="tokenInput" class="premium-input" placeholder="Cole o token do portal aqui...">
+                    </div>
+
+                    <button class="btn-primary" onclick="saveConfig()" id="btnAtivar">ATIVAR AUTOMAÇÃO</button>
+                    <button class="btn-primary" onclick="stopSocket()" id="btnParar" style="margin-top: 10px; background: var(--danger); box-shadow: 0 10px 20px var(--danger-glow); display: none;">PARAR AUTOMAÇÃO</button>
+                    
+                    <div style="background: rgba(255, 67, 101, 0.05); border: 1px dashed rgba(255, 67, 101, 0.2); padding: 20px; border-radius: 16px; margin-top: auto;">
+                        <div style="font-size: 11px; font-weight: 800; color: #ff4757; margin-bottom: 8px;">DICA DE SEGURANÇA</div>
+                        <div style="font-size: 12px; color: #8696a0; line-height: 1.5;">Nunca compartilhe seu token. Ele concede acesso direto a este agente.</div>
+                    </div>
+                </div>
+
+                <div class="log-container">
+                    <div class="log-header">
+                        <h3 style="margin:0; font-size: 16px;">Log de Atividades</h3>
+                        <button onclick="clearLogs()" style="background:transparent; border:none; color: var(--danger); font-size: 11px; font-weight:700; cursor:pointer;">LIMPAR</button>
+                    </div>
+                    <div class="log-screen" id="logBox">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { ipcRenderer } = require('electron');
+
+        function switchView(target) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+
+            if(target === 'whatsapp') {
+                document.getElementById('tab-wa').classList.add('active');
+                document.getElementById('whatsapp-view').classList.add('active');
+                ipcRenderer.send('switch-tab', 'whatsapp');
+            } else {
+                document.getElementById('tab-panel').classList.add('active');
+                document.getElementById('panel-view').classList.add('active');
+                ipcRenderer.send('switch-tab', 'monitor');
+            }
+        }
+
+        function saveConfig() {
+            const token = document.getElementById('tokenInput').value;
+            if(!token) return showNotification('Por favor, insira o token obrigatório.');
+            ipcRenderer.send('save-token', token);
+            addLog('Configuração enviada. Reiniciando conexão...', false);
+        }
+
+        function reloadWA() {
+            ipcRenderer.send('reload-whatsapp');
+            addLog('Reiniciando tela do WhatsApp...', false);
+        }
+
+        function stopSocket() {
+            ipcRenderer.send('stop-socket');
+            addLog('Solicitando desconexão...', false);
+        }
+
+        function clearLogs() {
+            const box = document.getElementById('logBox');
+            if (box) box.innerHTML = '';
+        }
+
+        function addLog(msg, isError = false) {
+            const box = document.getElementById('logBox');
+            if (!box) return;
+            const line = document.createElement('div');
+            line.className = 'log-line';
+            const t = new Date().toLocaleTimeString();
+            line.innerHTML = `<span class="log-t">[${t}]</span> <span class="log-m ${isError ? 'log-e' : ''}">${msg}</span>`;
+            box.appendChild(line);
+            box.scrollTop = box.scrollHeight;
+        }
+
+        function showNotification(msg) {
+            const n = document.getElementById('notification');
+            const m = document.getElementById('notif-msg');
+            if (!n || !m) return;
+            m.innerText = msg;
+            n.style.display = 'block';
+            setTimeout(() => { if (n) n.style.display = 'none'; }, 6000);
+        }
+
+        // HANDLERS
+        ipcRenderer.on('motor-heartbeat', () => {
+            const h = document.getElementById('motorHeartbeat');
+            h.innerText = '💙';
+            h.style.opacity = '1';
+            setTimeout(() => { h.style.opacity = '0.3'; }, 500);
+        });
+
+        ipcRenderer.on('status-change', (event, status) => {
+            const statusBox = document.getElementById('connStatus');
+            const statusLabel = document.getElementById('statusLabel');
+            const btnAtivar = document.getElementById('btnAtivar');
+            const btnParar = document.getElementById('btnParar');
+
+            if(status === 'online') {
+                statusBox.classList.add('online');
+                statusLabel.innerText = 'Online';
+                document.getElementById('notification').style.display = 'none';
+                btnAtivar.style.display = 'none';
+                btnParar.style.display = 'block';
+            } else {
+                statusBox.classList.remove('online');
+                statusLabel.innerText = 'Offline';
+                btnAtivar.style.display = 'block';
+                btnParar.style.display = 'none';
+                document.getElementById('motorHeartbeat').innerText = '';
+            }
+        });
+
+        ipcRenderer.on('log-msg', (event, msg) => {
+            const isError = msg.includes('ERRO') || msg.includes('Falha') || msg.includes('rejeitada');
+            addLog(msg, isError);
+            if(isError) showNotification(msg);
+        });
+
+        ipcRenderer.on('current-token', (event, token) => {
+            document.getElementById('tokenInput').value = token || '';
+        });
+
+        addLog('Sistema inicializado. Pronto para operação.', false);
+    </script>
+</body>
+</html>

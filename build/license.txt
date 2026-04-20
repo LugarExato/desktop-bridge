@@ -1,0 +1,24 @@
+CONTRATO DE LICENÇA DE USUÁRIO FINAL (EULA) E TERMOS E CONDIÇÕES DE USO
+
+POR FAVOR, LEIA COM ATENÇÃO ANTES DE INSTALAR O SOFTWARE.
+
+1. ACEITAÇÃO DOS TERMOS
+Ao instalar o "Lugar Exato Bridge", você concorda expressamente em ficar vinculado aos termos deste documento. Se você não concorda com os termos, não instale ou use o software.
+
+2. USO DA APLICAÇÃO
+Este software atua como uma ponte de automação (bridge) entre o ecossistema Lugar Exato e as instâncias de comunicação (WhatsApp). Você concorda em utilizar este sistema exclusivamente para fins lícitos de automação comercial ou residencial.
+
+3. RESTRIÇÕES EXCLUSIVAS
+- Você não está autorizado a modificar, descompilar, ou promover engenharia reversa do software.
+- É estritamente proibido o uso desta ferramenta para o envio de mensagens em massa não autorizadas, caracterizando SPAM, o que vai contra as diretrizes das provedoras de rede.
+- A "Lugar Exato Tecnologia" não se responsabiliza por eventuais banimentos, bloqueios ou penalidades atribuídas ao número vinculado pela operadora do canal (Meta/WhatsApp) causadas pelo mau uso dos motores de automação.
+
+4. ATUALIZAÇÕES AUTOMÁTICAS
+Este software está configurado para comunicar-se periodicamente com nossos servidores e verificar por novas atualizações. Ao aceitar estes termos, você autoriza o download e aplicação de melhorias contínuas, mantendo sua automação operando sem falhas visuais.
+
+5. RESPONSABILIDADE
+Sob nenhuma circunstância a Lugar Exato será responsável por quaisquer danos diretos, indiretos, incidentais ou consequenciais decorrentes do uso ou da incapacidade de usar este software.
+
+Ao clicar em "Eu aceito" ou "Instalar", você atesta que leu, compreendeu e concorda com todos os termos descritos acima.
+
+Copyright © 2026 Lugar Exato Tecnologia. Todos os direitos reservados.
